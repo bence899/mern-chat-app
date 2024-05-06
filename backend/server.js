@@ -1,17 +1,19 @@
 //Package Imports
-import express from 'express';
-import dotenv from 'dotenv';
-import cookieParser from 'cookie-parser';
+import express from "express";
+import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
+import path from "path";
 //Routes
-import authRoutes from './routes/auth.routes.js';
-import messageRoutes from './routes/message.routes.js';
-import userRoutes from './routes/user.routes.js';
+import authRoutes from "./routes/auth.routes.js";
+import messageRoutes from "./routes/message.routes.js";
+import userRoutes from "./routes/user.routes.js";
 //Database Connection
-import connectToMongoDB from './db/connectToMongoDB.js';
-import { app, server } from './socket/socket.js';
-
+import connectToMongoDB from "./db/connectToMongoDB.js";
+import { app, server } from "./socket/socket.js";
 
 const PORT = process.env.PORT || 5000;
+
+const __dirname = path.resolve();
 
 dotenv.config();
 
@@ -19,17 +21,17 @@ app.use(express.json()); // to parse the incoming request with JSON payloads (fr
 app.use(cookieParser()); // to parse the incoming request with cookies
 
 //Adding route for Authentication Using Middleware
-app.use("/api/auth", authRoutes)
+app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoutes);
 app.use("/api/users", userRoutes);
 
+app.use(express.static(path.join(__dirname, "/frontend/dist")));
 
-// app.get("/", (req,res) =>{
-//     //Root route hhtp://localhost:5000
-//     res.send("Hello World");
-// });
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "fronend", "dist", "index.html"));
+});
 
-server.listen (PORT, () => {
-    connectToMongoDB();
-    console.log(`Server is running on port ${PORT}`);
+server.listen(PORT, () => {
+  connectToMongoDB();
+  console.log(`Server is running on port ${PORT}`);
 });
