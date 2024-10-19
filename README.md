@@ -53,14 +53,14 @@ You can try out the live demo here: [MERN Chat App Live](https://mern-chat-app-a
 
 5. Start the application:
    ```bash
-   cd server
-   npm run dev
+   at root directory
+   npm run server
    ```
 
 6. Run the client:
    ```bash
-   cd client
-   npm start
+   cd frontend
+   npm run dev 
    ```
 
 ## Deployment
